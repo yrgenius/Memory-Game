@@ -70,29 +70,38 @@ const generateRandom = (size = 4) => {
 
 const matrixGenerator = (cardValues, size = 4) => {
     gameContainer.innerHTML = '';
-    cardValues = [...cardValues, ...cardValues];
-    //simple shuffle
-    cardValues.sort(() => Math.random() - 0.5);
-    for (let i = 0; i < size * size; i++) {
-        //create cards
-        //before => font side (contains question mark)
-        //after => back side (contains actual image)
-        //data-card-values is a castom attribute name
-        gameContainer.innerHTML += `
+    const matrixGenerator = (cardValues, size = 4) => {
+        gameContainer.innerHTML = '';
+        cardValues = [...cardValues, ...cardValues];
+        //simple shuffle
+        cardValues.sort(() => Math.random() - 0.5);
+        for (let i = 0; i < size * size; i++) {
+            //create cards
+            //before => font side (contains question mark)
+            //after => back side (contains actual image)
+            //data-card-values is a castom attribute name
+            gameContainer.innerHTML += `
         <div class="card-container" data-card-value="${cardValues[i].name}">
         <div class="card-before">?</div>
         <div class="card-after">
         <img src="images/${cardValues[i].image}" class="image"/></div>
      </div>
      `;
+            <div class="card-container" data-card-value="${cardValues[i].name}">
+                <div class="card-before">?</div>
+                <div class="card-after">
+                    <img src="images/${cardValues[i].image}" class="image" /></div>
+            </div>
+            `;
     }
 
 
     //grid
-    gameContainer.style.gridTemplateColumns = `repeat(${size}, auto )`;
+    gameContainer.style.gridTemplateColumns = `repeat(${ size }, auto)`;
 
     //cards
     cards = document.querySelectorAll('.card-container');
+    cards.forEach((card) => {
     cards.forEach((card) => {
         card.addEventListener('click', () => {
             if (!card.classList.contains('matched')) {
@@ -112,10 +121,11 @@ const matrixGenerator = (cardValues, size = 4) => {
                     firstCard = false;
                     winCount += 1;
                     if (winCount == Math.floor(cardValues.length / 2)) {
+                    if (winCount == Math.floor(cardValues.length / 2)) {
                         result.innerHTML = `
-                        <h2>You Won</h2>
-                        <h4>Movies: ${movesCount}</h4>
-                        `;
+                < h2 > You Won</ >
+                    <h4>Movies: ${movesCount}</h4>
+            `;
                         stopGame();
                     }
                 }
@@ -127,14 +137,18 @@ const matrixGenerator = (cardValues, size = 4) => {
                         tempFirst.classList.remove('flipped');
                         tempSecond.classList.remove('flipped');
                     }, 900);
+                    }, 900);
                 }
             }
         });
+    });
     });
 }
 
 startButton.addEventListener('click', () => {
     movesCount = 0;
+    seconds = 0;
+    minutes = 0;
     seconds = 0;
     minutes = 0;
     controls.classList.add('hide');
@@ -143,24 +157,35 @@ startButton.addEventListener('click', () => {
     //start timer
     interval = setInterval(timeGenerator, 1000);
     //initial moves
-    moves.innerHTML = `<span>Moves: <span> ${movesCount}`;
-    initializer();
+    moves.innerHTML = `< span > Moves: <span> ${movesCount}`;
+                initializer();
+});
 });
 
 //stop game
 stopButton.addEventListener('click', (stopGame => {
-    controls.classList.remove('hide');
-    stopButton.classList.add('hide');
-    startButton.classList.remove('hide');
-    clearInterval(interval);
+                    controls.classList.remove('hide');
+                stopButton.classList.add('hide');
+                startButton.classList.remove('hide');
+                clearInterval(interval);
 }));
 
 //initialize values and func calls
 const initializer = () => {
-    result.innerText = "";
-    winCount = 0;
-    let cardValues = generateRandom();
-    console.log(cardValues); //del
-    matrixGenerator(cardValues);
+                    result.innerText = "";
+                winCount = 0;
+                let cardValues = generateRandom();
+                console.log(cardValues); //del
+                matrixGenerator(cardValues);
+}
+}));
+
+//initialize values and func calls
+const initializer = () => {
+                    result.innerText = "";
+                winCount = 0;
+                let cardValues = generateRandom();
+                console.log(cardValues); //del
+                matrixGenerator(cardValues);
 }
 
