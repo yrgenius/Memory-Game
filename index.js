@@ -41,13 +41,13 @@ const timeGenerator = () => {
 //format time before displaying
 let secondsValue = seconds < 10 ? `0${seconds}` : seconds;
 let minutesValue = minutes < 10 ? `0${minutes}` : minutes;
-timeValue.textContent = `Time: ${minutesValue}: ${secondsValue}`;
+timeValue.innerHTML = `<span>Time:</span>${minutesValue}:${secondsValue}`;
 
 
 //for calculating moves
 const movesCounter = () => {
     movesCount += 1;
-    moves.textContent = `Moves: ${movesCount}`;
+    moves.innerHTML = `<span>Moves:</span>${movesCount}`;
 }
 
 //pick random objects from the items array
@@ -68,8 +68,8 @@ const generateRandom = (size = 4) => {
     return cardValues;
 }
 
-const matrixGeneraror = (cardValues, size = 4) => {
-    gameContainer.textContent = '';
+const matrixGenerator = (cardValues, size = 4) => {
+    gameContainer.innerHTML = '';
     cardValues = [...cardValues, ...cardValues];
     //simple shuffle
     cardValues.sort(() => Math.random() - 0.5);
@@ -79,14 +79,12 @@ const matrixGeneraror = (cardValues, size = 4) => {
         //after => back side (contains actual image)
         //data-card-values is a castom attribute name
         gameContainer.innerHTML += `
-        <div class="card-container" data-card-value=""${cardValues[i].name}">
-            <div class="card-before">?</div>
-            <div class="card-after">?
-                <img src="images/${cardValues[i].image}" class="image"/>
-            </div>
-        </div>
-        
-        `;
+        <div class="card-container" data-card-value="${cardValues[i].name}">
+        <div class="card-before">?</div>
+        <div class="card-after">
+        <img src="images/${cardValues[i].image}" class="image"/></div>
+     </div>
+     `;
     }
 
 
@@ -95,7 +93,7 @@ const matrixGeneraror = (cardValues, size = 4) => {
 
     //cards
     cards = document.querySelectorAll('.card-container');
-    cards.forEach(card => {
+    cards.forEach((card) => {
         card.addEventListener('click', () => {
             if (!card.classList.contains('matched')) {
                 card.classList.add('flipped');
@@ -113,7 +111,7 @@ const matrixGeneraror = (cardValues, size = 4) => {
                     secondCard.classList.add('matched');
                     firstCard = false;
                     winCount += 1;
-                    if (winCount == Math.floor(cardValues.length / 1)) {
+                    if (winCount == Math.floor(cardValues.length / 2)) {
                         result.innerHTML = `
                         <h2>You Won</h2>
                         <h4>Movies: ${movesCount}</h4>
@@ -128,16 +126,17 @@ const matrixGeneraror = (cardValues, size = 4) => {
                     let delay = setTimeout(() => {
                         tempFirst.classList.remove('flipped');
                         tempSecond.classList.remove('flipped');
-                    }, 900)
+                    }, 900);
                 }
             }
         });
-    })
+    });
 }
 
 startButton.addEventListener('click', () => {
     movesCount = 0;
-    time = 0;
+    seconds = 0;
+    minutes = 0;
     controls.classList.add('hide');
     stopButton.classList.remove('hide');
     startButton.classList.add('hide');
@@ -146,17 +145,7 @@ startButton.addEventListener('click', () => {
     //initial moves
     moves.innerHTML = `<span>Moves: <span> ${movesCount}`;
     initializer();
-})
-
-
-//initialize values and func calls
-const initializer = () => {
-    result.textContent = '';
-    winCount = 0;
-    let cardValues = generateRandom();
-    console.log(cardValues); //del
-    matrixGeneraror(cardValues);
-}
+});
 
 //stop game
 stopButton.addEventListener('click', (stopGame => {
@@ -164,5 +153,14 @@ stopButton.addEventListener('click', (stopGame => {
     stopButton.classList.add('hide');
     startButton.classList.remove('hide');
     clearInterval(interval);
-}))
+}));
+
+//initialize values and func calls
+const initializer = () => {
+    result.innerText = "";
+    winCount = 0;
+    let cardValues = generateRandom();
+    console.log(cardValues); //del
+    matrixGenerator(cardValues);
+}
 
