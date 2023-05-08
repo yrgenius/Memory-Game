@@ -123,6 +123,8 @@ button {
 
 #result {
     text-align: center;
+    position: relative;
+    top: 50%;
 }
 
 #result h2 {
